@@ -51,7 +51,7 @@ Module.register("MMM-Ferroamp",{
 
     //Contact node helper for solar data
     getSolarData: function() {
-        Log.info("SolarApp: getting data");
+        Log.info("Ferroamp: getting data");
 
         this.sendSocketNotification("GET_FERROAMP", {
             config: this.config
@@ -65,7 +65,9 @@ Module.register("MMM-Ferroamp",{
 	    if (currentPower > 1000) {
                this.results[0] = (currentPower / 1000).toFixed(2) + " kW";
             } else {
-               this.results[0] = currentPower + " Watt";
+               // Convert to integer, Ferroamp sends up to 14 decomals
+               // Looks really bad on the MagicMirror 
+               this.results[0] = Math.floor(currentPower) + " Watt";
             }
             this.results[1] = (payload.data.pvetoday.val / 1000).toFixed(2) + " kWh";
             this.results[2] = (payload.data.pve.val / 1000000).toFixed(2) + " MWh";
